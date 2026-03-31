@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MusicPlayer</string>
+    <string name="start">Play/Pause</string>
+    <string name="stop">Stop</string>
+    <string name="volumeUp">Volume +</string>
+    <string name="volumeDown">Volume -</string>
+</resources>
