@@ -57,7 +57,7 @@
         android:id="@+id/volumeSeeker"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="124dp"
         app:layout_constraintBottom_toTopOf="@+id/volumeDown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -70,9 +70,10 @@
         android:layout_height="wrap_content"
         android:text="Dolby Atmos"
         app:layout_constraintBottom_toTopOf="@+id/volumeUp"
-        app:layout_constraintEnd_toEndOf="@+id/volumeSeeker"
-        app:layout_constraintStart_toStartOf="@+id/volumeSeeker"
-        app:layout_constraintTop_toBottomOf="@+id/volumeSeeker" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnPickSong"
+        app:layout_constraintTop_toBottomOf="@+id/volumeSeeker"
+        app:layout_constraintVertical_bias="0.605" />
 
     <SeekBar
         android:id="@+id/progressbar"
@@ -83,4 +84,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stopBtn" />
 
+    <Button
+        android:id="@+id/btnPickSong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Select Song"
+        app:layout_constraintBottom_toTopOf="@+id/volumeDown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dolbyBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,10 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var seekBar: SeekBar
 
+    lateinit var pickSong: Button
+
     lateinit var Progress: SeekBar
     lateinit var music: MediaPlayer
 
@@ -40,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        music = MediaPlayer.create(this, R.raw.music2)
+
 
 
         start = findViewById(R.id.startBtn)
@@ -51,18 +57,18 @@ class MainActivity : AppCompatActivity() {
         seekBar = findViewById(R.id.volumeSeeker)
         dolby = findViewById(R.id.dolbyBtn)
         Progress = findViewById(R.id.progressbar)
+        pickSong = findViewById(R.id.btnPickSong)
 
-        Progress.max = music.duration
 
-        music.isLooping = true
 
         start.setOnClickListener {
-            if (music.isPlaying) {
-                music.pause()
-            } else {
-                music.start()
+            if (::music.isInitialized) {
+                if (music.isPlaying) {
+                    music.pause()
+                } else {
+                    music.start()
+                }
             }
-
         }
 
         stop.setOnClickListener {
@@ -70,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 music.pause()
                 music.seekTo(0)
             }
+            Progress.progress=0
         }
 
         val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
@@ -109,42 +116,97 @@ class MainActivity : AppCompatActivity() {
             music.setVolume(1.0f, 1.0f)
         }
 
+
+
+        val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+
+            if (uri != null) {
+
+                if (::music.isInitialized) {
+                    music.release()
+                }
+
+                music = MediaPlayer()
+
+                music.setOnPreparedListener {
+                    Progress.max = it.duration
+                    it.isLooping = true
+                    it.start()
+                }
+
+                music.setDataSource(this, uri)
+                music.prepareAsync()
+            }
+        }
+        pickSong.setOnClickListener {
+            launcher.launch("audio/*")
+        }
+
+
+
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_MUSIC,
-                    progress,
-                    AudioManager.FLAG_SHOW_UI
-                )
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    audioManager.setStreamVolume(
+                        AudioManager.STREAM_MUSIC,
+                        progress,
+                        AudioManager.FLAG_SHOW_UI
+                    )
+
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
+
+            Progress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) {
+                        music.seekTo(progress)
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+                }
+            })
+
+            var handler = Handler(Looper.getMainLooper())
+
+            var runnable = object : Runnable {
+                override fun run() {
+                    val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                    seekBar.progress = currentVolume
+                    handler.postDelayed(this, 200)
+                }
             }
+            handler.post(runnable)
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
-
-        var handler = Handler(Looper.getMainLooper())
-
-        var runnable = object : Runnable {
-            override fun run() {
-                val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                seekBar.progress = currentVolume
-                handler.postDelayed(this, 10)
+            val handlerPos = Handler(Looper.getMainLooper())
+            val runnable2 = object : Runnable {
+                override fun run() {
+                    if (::music.isInitialized && music.isPlaying) {
+                        val currentPosition = music.currentPosition
+                        Progress.progress = currentPosition
+                    }
+                    handlerPos.postDelayed(this, 200)
+                }
             }
+            handlerPos.post(runnable2)
+
         }
-        handler.post(runnable)
-
-        val handlerPos = Handler(Looper.getMainLooper())
-        val runnable2 = object : Runnable {
-            override fun run() {
-                val currentPosition = music.currentPosition
-                Progress.progress = currentPosition
-                handlerPos.postDelayed(this, 200)
-            }
-        }
-        handlerPos.post(runnable2)
-
-    }
 
 
 //    fun playMusic(){
