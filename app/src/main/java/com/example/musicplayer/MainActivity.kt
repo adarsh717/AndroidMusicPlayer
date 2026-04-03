@@ -2,6 +2,7 @@ package com.example.musicplayer
 import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.Runnable
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +35,23 @@ class MainActivity : AppCompatActivity() {
     lateinit var Progress: SeekBar
     lateinit var music: MediaPlayer
 
+    fun playMusic(uri: Uri) {
+
+        if (::music.isInitialized) {
+            music.release()
+        }
+
+        music = MediaPlayer()
+
+        music.setOnPreparedListener {
+            Progress.max = it.duration
+            it.start()
+        }
+
+        music.setDataSource(this, uri)
+        music.prepareAsync()
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -47,8 +64,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-
-
         start = findViewById(R.id.startBtn)
         stop = findViewById(R.id.stopBtn)
 
@@ -59,7 +74,17 @@ class MainActivity : AppCompatActivity() {
         Progress = findViewById(R.id.progressbar)
         pickSong = findViewById(R.id.btnPickSong)
 
+        val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 
+            if (uri != null) {
+                playMusic(uri)
+            }
+        }
+
+        val uri = intent.data
+        if (uri != null) {
+            playMusic(uri)
+        }
 
         start.setOnClickListener {
             if (::music.isInitialized) {
@@ -76,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                 music.pause()
                 music.seekTo(0)
             }
-            Progress.progress=0
+            Progress.progress = 0
         }
 
         val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
@@ -118,26 +143,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 
-            if (uri != null) {
-
-                if (::music.isInitialized) {
-                    music.release()
-                }
-
-                music = MediaPlayer()
-
-                music.setOnPreparedListener {
-                    Progress.max = it.duration
-                    it.isLooping = true
-                    it.start()
-                }
-
-                music.setDataSource(this, uri)
-                music.prepareAsync()
-            }
-        }
         pickSong.setOnClickListener {
             launcher.launch("audio/*")
         }
