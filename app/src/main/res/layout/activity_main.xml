@@ -5,14 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    tools:context=".MainActivity"
+    android:background="@drawable/shape"
+    >
 
     <Button
         android:id="@+id/startBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/start"
+        android:background="@drawable/shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/stopBtn"
         app:layout_constraintHorizontal_weight="1"
@@ -24,6 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/stop"
+        android:background="@drawable/shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
@@ -36,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Left Channel"
+        android:background="@drawable/shape"
         app:layout_constraintBottom_toTopOf="@+id/startBtn"
         app:layout_constraintEnd_toStartOf="@+id/volumeDown"
         app:layout_constraintHorizontal_weight="1"
@@ -48,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Right Channel"
+        android:background="@drawable/shape"
         app:layout_constraintBottom_toTopOf="@+id/stopBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
@@ -69,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dolby Atmos"
+        android:background="@drawable/shape"
         app:layout_constraintBottom_toTopOf="@+id/volumeUp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnPickSong"
@@ -79,8 +85,9 @@
         android:id="@+id/progressbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stopBtn" />
 
@@ -90,6 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Select Song"
+        android:background="@drawable/shape"
         app:layout_constraintBottom_toTopOf="@+id/volumeDown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dolbyBtn" />
