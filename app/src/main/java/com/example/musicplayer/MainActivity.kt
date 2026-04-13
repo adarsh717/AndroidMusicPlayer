@@ -1,224 +1,133 @@
 package com.example.musicplayer
 import android.annotation.SuppressLint
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.net.Uri
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
+import android.util.Log
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.SeekBar
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.Runnable
-
 class MainActivity : AppCompatActivity() {
+    private var musicService: MusicService? = null
+    private var isBound = false
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as MusicService.MyBinder
+            musicService = binder.getService()
+            isBound = true
+        }
 
-    lateinit var start: Button
-    lateinit var stop: Button
-    lateinit var volumeUpbtn: Button
-    lateinit var volumeDownbtn: Button
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isBound = false
+        }
+    }
 
-    lateinit var dolby: Button
-
-    lateinit var seekBar: SeekBar
-
+    lateinit var previousBtn: Button
+    lateinit var playPauseBtn: Button
+    lateinit var nextBtn: Button
+    lateinit var progress: SeekBar
     lateinit var pickSong: Button
 
-    lateinit var Progress: SeekBar
-    lateinit var music: MediaPlayer
-
-    fun playMusic(uri: Uri) {
-
-        if (::music.isInitialized) {
-            music.release()
-        }
-
-        music = MediaPlayer()
-
-        music.setOnPreparedListener {
-            Progress.max = it.duration
-            it.start()
-        }
-
-        music.setDataSource(this, uri)
-        music.prepareAsync()
-    }
+    lateinit var dlbbtn: Button
+    lateinit var leftspk : Button
+    lateinit var rigthspk: Button
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        start = findViewById(R.id.startBtn)
-        stop = findViewById(R.id.stopBtn)
+        bindService(
+            Intent(this, MusicService::class.java),
+            connection,
+            BIND_AUTO_CREATE
+        )
 
-        volumeUpbtn = findViewById(R.id.volumeUp)
-        volumeDownbtn = findViewById(R.id.volumeDown)
-        seekBar = findViewById(R.id.volumeSeeker)
-        dolby = findViewById(R.id.dolbyBtn)
-        Progress = findViewById(R.id.progressbar)
+        previousBtn = findViewById(R.id.pre)
+        playPauseBtn = findViewById(R.id.play_pause)
+        nextBtn = findViewById(R.id.nxt)
+        progress = findViewById(R.id.progressbar)
         pickSong = findViewById(R.id.btnPickSong)
+        dlbbtn=findViewById(R.id.dolbyBtn)
+        leftspk=findViewById(R.id.volumeUp)
+        rigthspk=findViewById(R.id.volumeDown)
 
-        val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 
-            if (uri != null) {
-                playMusic(uri)
-            }
+        dlbbtn.setOnClickListener {
+            musicService?.dolby()
+        }
+        leftspk.setOnClickListener {
+            musicService?.left()
+        }
+        rigthspk.setOnClickListener {
+            musicService?.right()
         }
 
-        val uri = intent.data
-        if (uri != null) {
-            playMusic(uri)
+        previousBtn.setOnClickListener {
+            musicService?.playPrevious()
         }
 
-        start.setOnClickListener {
-            if (::music.isInitialized) {
-                if (music.isPlaying) {
-                    music.pause()
-                } else {
-                    music.start()
-                }
-            }
+        playPauseBtn.setOnClickListener {
+            musicService?.playPause()
         }
 
-        stop.setOnClickListener {
-            if (::music.isInitialized) {
-                music.pause()
-                music.seekTo(0)
-            }
-            Progress.progress = 0
+        nextBtn.setOnClickListener {
+
+            musicService?.playNext()
         }
-
-        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        seekBar.max = maxVolume
-        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        seekBar.progress = currentVolume
-
-        volumeUpbtn.setOnClickListener {
-//
-//            if (currentVolume < maxVolume){
-//                currentVolume+=18
-//
-//                audioManager.setStreamVolume(
-//                    AudioManager.STREAM_MUSIC,
-//                    currentVolume,
-//                    AudioManager.FLAG_SHOW_UI
-//                )
-//            }
-            music.setVolume(1.0f, 0.0f)
-        }
-
-        volumeDownbtn.setOnClickListener {
-
-//            if (currentVolume > 0){
-//                currentVolume-=18
-//                audioManager.setStreamVolume(
-//                    AudioManager.STREAM_MUSIC,
-//                    currentVolume,
-//                    AudioManager.FLAG_SHOW_UI
-//                )
-//            }
-            music.setVolume(0.0f, 1.0f)
-        }
-
-        dolby.setOnClickListener {
-            music.setVolume(1.0f, 1.0f)
-        }
-
-
 
 
         pickSong.setOnClickListener {
-            launcher.launch("audio/*")
+            launcher.launch(arrayOf("audio/*"))
         }
 
 
-
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    audioManager.setStreamVolume(
-                        AudioManager.STREAM_MUSIC,
-                        progress,
-                        AudioManager.FLAG_SHOW_UI
-                    )
-
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-            })
-
-            Progress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    if (fromUser) {
-                        music.seekTo(progress)
-                    }
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-                }
-            })
-
-            var handler = Handler(Looper.getMainLooper())
-
-            var runnable = object : Runnable {
-                override fun run() {
-                    val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                    seekBar.progress = currentVolume
-                    handler.postDelayed(this, 200)
+        progress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(sb: SeekBar?, value: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    musicService?.seekTo(value)
                 }
             }
-            handler.post(runnable)
 
-            val handlerPos = Handler(Looper.getMainLooper())
-            val runnable2 = object : Runnable {
-                override fun run() {
-                    if (::music.isInitialized && music.isPlaying) {
-                        val currentPosition = music.currentPosition
-                        Progress.progress = currentPosition
-                    }
-                    handlerPos.postDelayed(this, 200)
+            override fun onStartTrackingTouch(sb: SeekBar?) {}
+            override fun onStopTrackingTouch(sb: SeekBar?) {}
+        })
+
+
+        val handler = Handler(Looper.getMainLooper())
+        val runnable = object : Runnable {
+            override fun run() {
+                if (musicService?.isPlaying() == true) {
+                    progress.max = musicService?.getDuration() ?: 0
+                    progress.progress = musicService?.getCurrentPosition() ?: 0
                 }
+                handler.postDelayed(this, 500)
             }
-            handlerPos.post(runnable2)
-
         }
-
-
-//    fun playMusic(){
-//        music.start()
-//    }
+        handler.post(runnable)
     }
 
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
 
+            if (uris.isNotEmpty()) {
+                val list = ArrayList(uris)
+                musicService?.setPlaylist(list, 0)
+                musicService?.playSong(0)
+            }
+        }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isBound) {
+            unbindService(connection)
+            isBound = false
+        }
+    }
+}

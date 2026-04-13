@@ -13,20 +13,21 @@
         android:id="@+id/startBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/start"
+        android:layout_marginStart="8dp"
         android:background="@drawable/shape"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/start"
+        app:layout_constraintBaseline_toBaselineOf="@+id/stopBtn"
         app:layout_constraintEnd_toStartOf="@id/stopBtn"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/stopBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/stop"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/shape"
+        android:text="@string/stop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
@@ -37,22 +38,23 @@
         android:id="@+id/volumeUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Left Channel"
+        android:layout_marginStart="8dp"
         android:background="@drawable/shape"
-        app:layout_constraintBottom_toTopOf="@+id/startBtn"
+        android:text="Left Channel"
+        app:layout_constraintBaseline_toBaselineOf="@+id/volumeDown"
+
         app:layout_constraintEnd_toStartOf="@+id/volumeDown"
         app:layout_constraintHorizontal_weight="1"
-
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/volumeDown"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Right Channel"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="36dp"
         android:background="@drawable/shape"
+        android:text="Right Channel"
         app:layout_constraintBottom_toTopOf="@+id/stopBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
@@ -62,22 +64,24 @@
         android:id="@+id/volumeSeeker"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
+        android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toTopOf="@+id/volumeDown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/dolbyBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dolby Atmos"
         android:background="@drawable/shape"
+        android:text="Dolby Atmos"
         app:layout_constraintBottom_toTopOf="@+id/volumeUp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnPickSong"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/volumeSeeker"
         app:layout_constraintVertical_bias="0.605" />
 
@@ -95,10 +99,48 @@
         android:id="@+id/btnPickSong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Select Song"
         android:background="@drawable/shape"
-        app:layout_constraintBottom_toTopOf="@+id/volumeDown"
+        android:text="Select Song"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dolbyBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dolbyBtn" />
+
+    <Button
+        android:id="@+id/pre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape"
+        android:text="Pre Song"
+        app:layout_constraintBottom_toBottomOf="@+id/play_pause"
+        app:layout_constraintEnd_toStartOf="@+id/play_pause"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/play_pause" />
+
+    <Button
+        android:id="@+id/play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape"
+        android:text="Play/Pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nxt"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pre"
+        app:layout_constraintTop_toBottomOf="@+id/progressbar"
+        app:layout_constraintVertical_bias="0.307" />
+
+    <Button
+        android:id="@+id/nxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape"
+        android:text="Next Song"
+        app:layout_constraintBottom_toBottomOf="@+id/play_pause"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/play_pause"
+        app:layout_constraintTop_toTopOf="@+id/play_pause" />
 </androidx.constraintlayout.widget.ConstraintLayout>
