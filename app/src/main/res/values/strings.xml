@@ -37,4 +37,6 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
+    <string name="search">search</string>
+    <string name="more">More</string>
 </resources>
