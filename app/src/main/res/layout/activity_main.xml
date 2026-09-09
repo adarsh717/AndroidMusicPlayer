@@ -1,141 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/shape"
-    >
+    android:background="#121212"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
-    <SeekBar
-        android:id="@+id/progressbar"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="30dp">
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play_pause"
-        app:layout_constraintVertical_bias="0.0" />
+        <!-- TITLE -->
 
-    <Button
-        android:id="@+id/volumeDown"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/shape"
-        android:text="Right Channel"
-        app:layout_constraintBaseline_toBaselineOf="@+id/volumeUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/volumeUp" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="Music Player"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/nxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/shape"
-        android:text="Next Song"
-        app:layout_constraintBaseline_toBaselineOf="@+id/play_pause"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/play_pause" />
+        <ImageView
+            android:id="@+id/albumImage"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="48dp"
+            android:background="#1E1E1E"
+            android:contentDescription="Album Art"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
-    <Button
-        android:id="@+id/dolbyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/shape"
-        android:text="Dolby Atmos"
-        app:layout_constraintEnd_toStartOf="@+id/btnPickSong"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/volumeSeeker" />
+        <TextView
+            android:id="@+id/songTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="No Song Selected"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/albumImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Button
-        android:id="@+id/play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/shape"
-        android:text="Play/Pause"
-        app:layout_constraintEnd_toStartOf="@+id/nxt"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/pre"
-        app:layout_constraintTop_toBottomOf="@+id/volumeDown" />
 
-    <SeekBar
-        android:id="@+id/volumeSeeker"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="288dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/artistName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Unknown Artist"
+            android:textColor="#9E9E9E"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/songTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Button
-        android:id="@+id/volumeUp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
 
-        android:background="@drawable/shape"
-        android:text="Left Channel"
-        app:layout_constraintBottom_toTopOf="@+id/play_pause"
-        app:layout_constraintEnd_toStartOf="@+id/volumeDown"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dolbyBtn"
-        app:layout_constraintVertical_bias="0.0" />
+        <!-- ===================== -->
+        <!-- TIME + PROGRESS -->
+        <!-- ===================== -->
 
-    <Button
-        android:id="@+id/pre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/shape"
-        android:text="Pre Song"
-        app:layout_constraintBaseline_toBaselineOf="@+id/play_pause"
-        app:layout_constraintEnd_toStartOf="@+id/play_pause"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/currenttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="00:00"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/artistName"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    <Button
-        android:id="@+id/btnPickSong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape"
-        android:text="Select Song"
-        app:layout_constraintBaseline_toBaselineOf="@+id/dolbyBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dolbyBtn" />
 
-    <TextView
-        android:id="@+id/currenttime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        <TextView
+            android:id="@+id/maxtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="00:00"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/artistName"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        android:id="@+id/maxtime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <SeekBar
+            android:id="@+id/progressbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:progressTint="#8B5CF6"
+            android:thumbTint="#8B5CF6"
+            app:layout_constraintTop_toTopOf="@id/currenttime"
+            app:layout_constraintBottom_toBottomOf="@id/currenttime"
+            app:layout_constraintStart_toEndOf="@id/currenttime"
+            app:layout_constraintEnd_toStartOf="@id/maxtime"/>
+
+
+        <!-- ===================== -->
+        <!-- PLAYBACK CONTROLS -->
+        <!-- ===================== -->
+
+        <Button
+            android:id="@+id/pre"
+            android:layout_width="58dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="22dp"
+            android:backgroundTint="#252525"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text="⏮"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/progressbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/play_pause"/>
+
+
+        <Button
+            android:id="@+id/play_pause"
+            android:layout_width="72dp"
+            android:layout_height="60dp"
+            android:backgroundTint="#8B5CF6"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text="▶"
+            android:textColor="#FFFFFF"
+            android:textSize="23sp"
+            app:layout_constraintTop_toTopOf="@id/pre"
+            app:layout_constraintStart_toEndOf="@id/pre"
+            app:layout_constraintEnd_toStartOf="@id/nxt"/>
+
+
+        <Button
+            android:id="@+id/nxt"
+            android:layout_width="58dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="22dp"
+            android:backgroundTint="#252525"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text="⏭"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/progressbar"
+            app:layout_constraintStart_toEndOf="@id/play_pause"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <!-- ===================== -->
+        <!-- VOLUME -->
+        <!-- ===================== -->
+
+        <TextView
+            android:id="@+id/volumeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Volume"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/play_pause"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <Button
+            android:id="@+id/volumeDown"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#252525"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text="−"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@id/volumeText"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <SeekBar
+            android:id="@+id/volumeSeeker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:progressTint="#8B5CF6"
+            android:thumbTint="#8B5CF6"
+            app:layout_constraintTop_toTopOf="@id/volumeDown"
+            app:layout_constraintBottom_toBottomOf="@id/volumeDown"
+            app:layout_constraintStart_toEndOf="@id/volumeDown"
+            app:layout_constraintEnd_toStartOf="@id/volumeUp"/>
+
+
+        <Button
+            android:id="@+id/volumeUp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#252525"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text="+"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@id/volumeText"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <!-- ===================== -->
+        <!-- BOTTOM ACTIONS -->
+        <!-- ===================== -->
+
+        <Button
+            android:id="@+id/dolbyBtn"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="6dp"
+            android:backgroundTint="#252525"
+            android:text="Dolby"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/volumeDown"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnPickSong"/>
+
+
+        <Button
+            android:id="@+id/btnPickSong"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="25dp"
+            android:backgroundTint="#8B5CF6"
+            android:text="Select Song"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/volumeDown"
+            app:layout_constraintStart_toEndOf="@id/dolbyBtn"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

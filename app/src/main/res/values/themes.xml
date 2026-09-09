@@ -6,4 +6,17 @@
     </style>
 
     <style name="Theme.MusicPlayer" parent="Base.Theme.MusicPlayer" />
+    
+    <style name="customEditStyle"> <!-- custom edit style -->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!-- inherit customEditStyle -->
+    <style name="colorStyle" parent="customEditStyle">
+        <item name="android:backgroundTint">@color/black</item>
+    </style>
+    
+
+
 </resources>

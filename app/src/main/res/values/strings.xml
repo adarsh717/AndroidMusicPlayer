@@ -1,7 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MusicPlayer</string>
-    <string name="start">Play/Pause</string>
-    <string name="stop">Stop</string>
-    <string name="volumeUp">Volume +</string>
-    <string name="volumeDown">Volume -</string>
+
+    <!-- Main Background -->
+    <color name="background">#0E0E0F</color>
+    <color name="background_light">#161617</color>
+
+    <!-- Surface / Cards -->
+    <color name="surface">#1A1A1C</color>
+    <color name="surface_light">#242426</color>
+    <color name="card_background">#1C1C1E</color>
+
+    <!-- Primary Accent - Muted Gold -->
+    <color name="primary">#C9A96E</color>
+    <color name="primary_light">#D8BF8B</color>
+    <color name="primary_dark">#A98B55</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F5F3EF</color>
+    <color name="text_secondary">#AAA7A2</color>
+    <color name="text_tertiary">#706E6A</color>
+
+    <!-- Player -->
+    <color name="player_background">#181819</color>
+    <color name="play_button">#C9A96E</color>
+    <color name="player_icon">#F5F3EF</color>
+
+    <!-- SeekBar -->
+    <color name="progress_active">#C9A96E</color>
+    <color name="progress_inactive">#3A3937</color>
+
+    <!-- Divider / Border -->
+    <color name="divider">#29292B</color>
+    <color name="border">#323234</color>
+
+    <!-- Basic -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
 </resources>
